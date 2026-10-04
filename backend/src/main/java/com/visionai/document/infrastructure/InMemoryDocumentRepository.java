@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @Profile("dev")
-public final class InMemoryDocumentRepository implements DocumentRepository {
+public class InMemoryDocumentRepository implements DocumentRepository {
     private final ConcurrentHashMap<UUID, Document> documents = new ConcurrentHashMap<>();
     public Document save(Document document) { documents.put(document.id(), document); return document; }
     public Optional<Document> findById(UUID id) { return Optional.ofNullable(documents.get(id)); }
