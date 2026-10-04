@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: visionai-backend
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/visionai}
+    username: ${DATABASE_USERNAME:visionai}
+    password: ${DATABASE_PASSWORD:visionai-local}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+server:
+  shutdown: graceful
+  error:
+    include-stacktrace: never
+    include-message: never

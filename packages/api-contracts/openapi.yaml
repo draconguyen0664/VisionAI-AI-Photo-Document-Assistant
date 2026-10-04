@@ -1,0 +1,60 @@
+openapi: 3.1.0
+info: { title: VisionAI API, version: 0.1.0 }
+servers: [{ url: /api/v1 }]
+security: [{ firebaseBearer: [] }]
+paths:
+  /documents:
+    get:
+      operationId: listDocuments
+      responses:
+        '200':
+          description: Owned documents
+          content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Document' } } } }
+    post:
+      operationId: createDocument
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/CreateDocument' } } }
+      responses:
+        '201': { description: Created, content: { application/json: { schema: { $ref: '#/components/schemas/Document' } } } }
+        '422': { $ref: '#/components/responses/Problem' }
+  /documents/{id}:
+    get:
+      operationId: getDocument
+      parameters: [{ in: path, name: id, required: true, schema: { type: string, format: uuid } }]
+      responses:
+        '200': { description: Owned document, content: { application/json: { schema: { $ref: '#/components/schemas/Document' } } } }
+        '403': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
+components:
+  securitySchemes:
+    firebaseBearer: { type: http, scheme: bearer, bearerFormat: JWT }
+  responses:
+    Problem: { description: API error, content: { application/json: { schema: { $ref: '#/components/schemas/ApiError' } } } }
+  schemas:
+    CreateDocument:
+      type: object
+      required: [name, contentType, sizeBytes]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 255 }
+        contentType: { type: string, enum: [image/jpeg, image/png, image/webp, application/pdf] }
+        sizeBytes: { type: integer, minimum: 1, maximum: 26214400 }
+    Document:
+      type: object
+      required: [id, name, contentType, sizeBytes, type, status, createdAt]
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        contentType: { type: string }
+        sizeBytes: { type: integer }
+        type: { type: string }
+        status: { type: string }
+        createdAt: { type: string, format: date-time }
+    ApiError:
+      type: object
+      required: [code, message, timestamp, traceId]
+      properties:
+        code: { type: string }
+        message: { type: string }
+        timestamp: { type: string, format: date-time }
+        traceId: { type: string }

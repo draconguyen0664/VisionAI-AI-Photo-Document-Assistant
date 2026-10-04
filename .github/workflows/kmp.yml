@@ -1,0 +1,14 @@
+name: kmp
+on:
+  push: { paths: ['apps/kmp/**', '*.gradle.kts', 'gradle.properties'] }
+  pull_request: { paths: ['apps/kmp/**', '*.gradle.kts', 'gradle.properties'] }
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    permissions: { contents: read }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: '21', cache: gradle }
+      - uses: gradle/actions/setup-gradle@v4
+      - run: gradle :apps:kmp:composeApp:allTests :apps:kmp:composeApp:assembleDebug --no-daemon

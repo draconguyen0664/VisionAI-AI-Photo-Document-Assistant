@@ -1,0 +1,16 @@
+.gradle/
+**/target/
+.local/
+*.log
+**/build/
+.idea/
+*.iml
+.env
+local.properties
+**/.dart_tool/
+**/Pods/
+*.jks
+*.p12
+firebase-admin*.json
+google-services.json
+GoogleService-Info.plist
