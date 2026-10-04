@@ -1,9 +1,9 @@
-FROM gradle:8.12-jdk21 AS build
+FROM maven:3.9.9-eclipse-temurin-21 AS build
 WORKDIR /workspace
 COPY . .
-RUN gradle bootJar --no-daemon
+RUN mvn -B -ntp package
 FROM eclipse-temurin:21-jre-alpine
 RUN addgroup -S visionai && adduser -S visionai -G visionai
 USER visionai
-COPY --from=build /workspace/build/libs/*.jar /app/app.jar
+COPY --from=build /workspace/target/visionai-backend-0.1.0.jar /app/app.jar
 ENTRYPOINT ["java","-jar","/app/app.jar"]

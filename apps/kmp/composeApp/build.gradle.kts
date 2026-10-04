@@ -6,7 +6,9 @@ plugins {
     id("com.android.application")
 }
 kotlin {
-    androidTarget()
+    androidTarget {
+        compilerOptions { jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17) }
+    }
     iosX64(); iosArm64(); iosSimulatorArm64()
     sourceSets {
         commonMain.dependencies {
@@ -24,4 +26,18 @@ kotlin {
         androidMain.dependencies { implementation("androidx.activity:activity-compose:1.10.0") }
     }
 }
-android { namespace = "com.visionai.app"; compileSdk = 35; defaultConfig { applicationId = "com.visionai.app"; minSdk = 26; targetSdk = 35; versionCode = 1; versionName = "0.1.0" } }
+android {
+    namespace = "com.visionai.app"
+    compileSdk = 35
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    defaultConfig {
+        applicationId = "com.visionai.app"
+        minSdk = 26
+        targetSdk = 35
+        versionCode = 1
+        versionName = "0.1.0"
+    }
+}
